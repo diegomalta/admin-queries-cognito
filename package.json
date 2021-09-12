@@ -4,7 +4,10 @@
   "description": "API to admin Cognito User Pools",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "prestart": "npm run build & cp -R api dist/",
+    "start": "node dist/index.js",
+    "build-prod": "npm run build && cp package.json dist/package.json && cd dist && npm install"
   },
   "repository": {
     "type": "git",
@@ -13,7 +16,6 @@
   "keywords": [
     "cognito"
   ],
-  "author": "Diego Malta",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/diegomalta/admin-queries-cognito/issues"

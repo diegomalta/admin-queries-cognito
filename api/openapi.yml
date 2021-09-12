@@ -1,0 +1,82 @@
+openapi: 3.0.1
+info:
+  title: AdminQueries
+  version: "1.0"
+servers:
+- url: /
+paths:
+  /:
+    options:
+      responses:
+        "200":
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
+              method.response.header.Access-Control-Allow-Headers: >-
+                'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+    x-amazon-apigateway-any-method:
+      produces:
+        - application/json
+      parameters:
+        - name: proxy
+          in: path
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses: {}
+      security:
+        - Cognito:
+            - aws.cognito.signin.user.admin
+      x-amazon-apigateway-request-validator: Validate query string parameters and headers
+      x-amazon-apigateway-integration:
+        uri: ""
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        cacheNamespace: n40eb9
+        cacheKeyParameters:
+          - method.request.path.proxy
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+components:
+  schemas:
+    Empty:
+      title: Empty Schema
+      type: object
+  securitySchemes:
+    Cognito:
+      Type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: cognito_user_pools
+      x-amazon-apigateway-authorizer:
+        providerARNs: 
+          Fn::Sub: arn:aws
+        type: cognito_user_pools
+x-amazon-apigateway-request-validators:
+  Validate query string parameters and headers:
+    validateRequestParameters: true
+    validateRequestBody: false
+
+    
