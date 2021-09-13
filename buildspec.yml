@@ -5,5 +5,5 @@ phases:
       nodejs: 12
   build:
     commands:
-      - ./scripts/deploy.sh
+      - . scripts/deploy.sh
   
