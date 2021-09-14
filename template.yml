@@ -1,5 +1,8 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: serverless function with apiGateway
+Parameters:
+  name:
+    Type: String
 Resources:
   AdminQueriesCognitoFunction:
     Type: AWS::Serverless::Function
@@ -7,3 +10,4 @@ Resources:
       CodeUri: dist/
       Handler: index.handler
       Runtime: nodejs12.x
+      FunctionName: !Ref name
