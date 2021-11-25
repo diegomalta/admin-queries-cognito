@@ -4,6 +4,9 @@ Description: serverless function with apiGateway
 Parameters:
   name:
     Type: String
+  templateUrl:
+    Type: String
+    Default: api/openapi.yml
 Resources:
   AdminQueriesCognitoFunction:
     Type: AWS::Serverless::Function
@@ -12,3 +15,34 @@ Resources:
       Handler: index.handler
       Runtime: nodejs12.x
       FunctionName: !Ref name
+  TheApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: !Ref templateUrl
+  ApiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: ApiGatewayExecutionRole
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                Resource:
+                  - Fn::Sub: ${AdminQueriesCognitoFunction.Arn}
