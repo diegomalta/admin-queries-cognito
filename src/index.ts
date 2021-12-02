@@ -8,6 +8,8 @@ export const handler = router.handler({
             path: '/users/list',
             method: 'GET',
             action: (request, context) => {
+                const groups = context.authorizer.claims['cognito:groups'].split(',');
+                console.log(groups.toString());
                 return `You called me`;
             }
         }]
