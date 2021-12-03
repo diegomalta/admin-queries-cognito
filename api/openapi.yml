@@ -51,9 +51,6 @@ paths:
         in: "header"
         schema:
           type: "string"
-      security:
-      - Cognito:
-        - "aws.cognito.signin.user.admin"
       x-amazon-apigateway-request-validator: "Validate query string parameters and\
         \ headers"
       x-amazon-apigateway-integration:
