@@ -8,10 +8,9 @@ export const handler = router.handler({
             path: '/users/list',
             method: 'GET',
             action: (request, context) => {
-                console.log(context.accountId);
-                console.table(context.identity);
-                console.table(context.authorizer);
-                return `You called me with Context.AccountId:${context.accountId} identity${context.identity?.accountId}`;
+                console.log("REQUEST: \n" + JSON.stringify(request, null, 2));
+                console.log("CONTEXT: \n" + JSON.stringify(context, null, 2));
+                return `You called me with `;
             }
         }]
     }
