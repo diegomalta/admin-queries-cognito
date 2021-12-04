@@ -1,25 +1,31 @@
-import { ProxyIntegrationEvent } from 'aws-lambda-router/lib/proxyIntegration'
+import {
+  ProxyIntegrationEvent,
+  ProxyIntegrationRoute
+} from "aws-lambda-router/lib/proxyIntegration";
+import { ApiGatewayManagementApi } from "aws-sdk";
+import * as router from 'aws-lambda-router';
+import { parseToken } from '../../common/parseToken';
 
-export const getUserList = (request: ProxyIntegrationEvent<{ text: string }>, context) => {
-    return {
-        statusCode: 200,
-        body: "message"
-    }
-}
 
-export const getUserTest = (request: ProxyIntegrationEvent<{ text: string }>, context) => {
-    return {
-        statusCode: 200,
-        body: "message test"
-    }
-}
+const checkGroup = (request: ProxyIntegrationEvent<unknown>) => {
+  const userInfo = parseToken(request.headers.Autorization.split(" ")[1]);
+  console.log("USERINFO: \n" + JSON.stringify(userInfo, null, 2));
+};
 
-export const routes = [
-    {
-        path: '/users/list',
-        method: 'GET',
-        action: (request: ProxyIntegrationEvent<{ text: string }>, context) => {
-            return `You called me with: ${request.body.text}`
-        }
-    }
-]
+export const getUserList: ProxyIntegrationRoute["action"] = async (
+  request,
+  context
+) => {
+  checkGroup(request);
+
+  return {
+    statusCode: 200,
+    body: `You called me with `,
+  };
+};
+
+export const routes = [{
+    path: '/users/list',
+    method: 'GET',
+    action: getUserList
+}];
