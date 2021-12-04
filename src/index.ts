@@ -9,9 +9,13 @@ export const handler = router.handler({
             path: '/users/list',
             method: 'GET',
             action: (request, context) => {
-                const tokenInfo = parseToken(request.headers.Authorization.split(' ')[1]);
-                console.log("REQUEST: \n" + JSON.stringify(request, null, 2));
-                console.log("TOKEN: \n" + JSON.stringify(tokenInfo, null, 2));
+                try {
+                    console.log("REQUEST: \n" + JSON.stringify(request, null, 2));
+                    const tokenInfo = parseToken(request.headers.Authorization.split(' ')[1]);
+                    console.log("TOKEN: \n" + JSON.stringify(tokenInfo, null, 2));
+                } catch (e) {
+                    console.log(e);
+                }
 
                 return `You called me with `;
             }
