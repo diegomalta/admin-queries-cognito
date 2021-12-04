@@ -1,6 +1,6 @@
 import * as router from 'aws-lambda-router';
 import * as userController from './controllers/Users';
-import { parseToken } from '../common/parseToken';
+import { parseToken } from './common/parseToken';
 
 export const handler = router.handler({
     proxyIntegration: {
