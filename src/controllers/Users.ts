@@ -6,7 +6,7 @@ import {
   import { CognitoIdentityServiceProvider } from 'aws-sdk';
   
   const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
-  const userPoolId = "";
+  const userPoolId = process.env.USERPOOL;
 
   const checkGroup = (request: ProxyIntegrationEvent<unknown>) => {
     const userInfo = parseToken(request.headers.Authorization.split(" ")[1]);
@@ -20,7 +20,7 @@ import {
     checkGroup(request);
 
     const params = {
-        UserPoolId: ""
+        UserPoolId: userPoolId
     };
 
     try {

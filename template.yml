@@ -15,6 +15,9 @@ Resources:
       Handler: index.handler
       Runtime: nodejs12.x
       FunctionName: !Ref name
+      Environment:
+        Variables:
+          USERPOOL: us-east-1_AFEKQafgQ
   TheApi:
     Type: AWS::Serverless::Api
     Properties:
