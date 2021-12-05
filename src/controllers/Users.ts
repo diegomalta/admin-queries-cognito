@@ -6,7 +6,7 @@ import {
   
   
   const checkGroup = (request: ProxyIntegrationEvent<unknown>) => {
-    const userInfo = parseToken(request.headers.Autorization.split(" ")[1]);
+    const userInfo = parseToken(request.headers.Authorization.split(" ")[1]);
     console.log("USERINFO: \n" + JSON.stringify(userInfo, null, 2));
   };
   
