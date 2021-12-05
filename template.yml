@@ -18,6 +18,12 @@ Resources:
       Environment:
         Variables:
           USERPOOL: us-east-1_AFEKQafgQ
+      Policies:
+        - Statement:
+            Effect: Allow
+            Action:
+              - cognito-idp:ListUsers
+            Reource: '*'
   TheApi:
     Type: AWS::Serverless::Api
     Properties:
