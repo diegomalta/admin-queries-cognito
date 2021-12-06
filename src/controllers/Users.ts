@@ -16,7 +16,7 @@ const checkGroup = (request: ProxyIntegrationEvent<unknown>) => {
   const userGroups = parseToken(request.headers.Authorization.split(" ")[1])[
     "cognito:groups"
   ];
-  if (!(allowedGroup && userGroups.indexOf(allowedGroup) > -1)) {
+  if (!(allowedGroup && userGroups?.indexOf(allowedGroup) > -1)) {
     console.log("not allowed");
   } else {
     console.log("allowed");
