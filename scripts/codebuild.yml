@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: codebuild to deploy api in a lambda
+Parameters:
+  RepoUrl:
+    Default: https://github.com/diegomalta/admin-queries-cognito
+    Description: Repo Url
+    Type: String
+Resources:
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: NO_ARTIFACTS
+      Name: admin-queries-cognito
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:4.0
+        Type: LINUX_CONTAINER
+        EnvironmentVariables:
+          - Name: AWS_ACCOUNT_ID
+            Value: !Sub ${AWS::AccountId}
+            Type: PLAINTEXT
+      ServiceRole: !Sub 'arn:aws:iam::${AWS::AccountId}:role/CodeBuildExecutionRole'
+      Source:
+        Location: !Ref RepoUrl
+        ReportBuildStatus: true
+        Type: GITHUB
+      SourceVersion: master
+        

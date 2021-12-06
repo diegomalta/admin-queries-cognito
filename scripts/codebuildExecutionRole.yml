@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: codebuild role
+Resources:
+  CodeBuildExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: CodeBuildExecutionRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+      - PolicyName: codebuildpolicies
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Effect: Allow
+            Resource:
+            - !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*'
+            Action:
+            - logs:CreateLogStream
+            - logs:CreateLogGroup
+            - logs:PutLogEvents
+          - Effect: Allow
+            Resource:
+            - !Sub 'arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:*'
+            Action:
+            - codebuild:*
+          - Effect: Allow
+            Resource:
+            - !Sub 'arn:aws:cloudformation:${AWS::Region}:*'
+            Action:
+            - cloudformation:DescribeStacks
+            - cloudformation:CreateChangeSet
+            - cloudformation:GetTemplateSummary
+          - Effect: Allow
+            Resource: 
+            - !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function*'
+            Action:
+            - lambda:CreateFunction
+          - Effect: Allow
+            Resource: 
+            - !Sub 'arn:aws:s3:::${AWS::AccountId}-code-storage/*'
+            Action:
+            - s3:Get*
+            - s3:List*
+            - s3:Put*
+Outputs:
+  CodeBuildExecutionIAMRole:
+    Value: !GetAtt CodeBuildExecutionRole.Arn
