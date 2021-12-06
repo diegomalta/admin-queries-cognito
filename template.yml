@@ -23,9 +23,8 @@ Resources:
             - Sid: CognitoAccessPolicy
               Effect: Allow
               Action:
-              - cognito-idp:ListUsers
-              Reource: 
-              - '*'
+                - cognito-idp:ListUsers
+              Resource: '*'
   TheApi:
     Type: AWS::Serverless::Api
     Properties:
