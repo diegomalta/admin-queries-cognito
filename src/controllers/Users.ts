@@ -7,10 +7,20 @@ import { CognitoIdentityServiceProvider } from "aws-sdk";
 
 const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
 const userPoolId = process.env.USERPOOL;
+const allowedGroup = "admin";
 
 const checkGroup = (request: ProxyIntegrationEvent<unknown>) => {
   const userInfo = parseToken(request.headers.Authorization.split(" ")[1]);
   console.log("USERINFO: \n" + JSON.stringify(userInfo, null, 2));
+
+  const userGroups = parseToken(request.headers.Authorization.split(" ")[1])[
+    "cognito:groups"
+  ];
+  if (!(allowedGroup && userGroups.indexOf(allowedGroup) > -1)) {
+    console.log("not allowed");
+  } else {
+    console.log("allowed");
+  }
 };
 
 export const getUserList: ProxyIntegrationRoute["action"] = async (
