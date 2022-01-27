@@ -4,8 +4,9 @@ import {
 } from "aws-lambda-router/lib/proxyIntegration";
 import { parseToken } from "../common/parseToken";
 import { CognitoIdentityServiceProvider } from "aws-sdk";
+import { ListUsersRequest } from "aws-sdk/clients/cognitoidentityserviceprovider";
 
-const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
+const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({logger: console});
 const userPoolId = process.env.USERPOOL;
 const allowedGroup = "admin";
 
@@ -29,8 +30,8 @@ export const getUserList: ProxyIntegrationRoute["action"] = async (
 ) => {
   checkGroup(request);
 
-  const params = {
-    UserPoolId: userPoolId,
+  const params: ListUsersRequest = {
+    UserPoolId: userPoolId
   };
 
   try {
