@@ -28,11 +28,10 @@ export const getUserList: ProxyIntegrationRoute["action"] = async (
   request,
   context
 ) => {
-  AWS.config.logger = console;
   checkGroup(request);
 
   const params: ListUsersRequest = {
-    UserPoolId: userPoolId
+    UserPoolId: "userPoolId"
   };
 
   try {
